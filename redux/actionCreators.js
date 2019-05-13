@@ -1,10 +1,7 @@
-
-
-
-
-export const someAction=()=>{
-    return{
-        type:'UPDATE',
-        payload:'helloo'
-    }
-}
+export const updateEntry = (entry, section) => {
+  return {
+    type: "UPDATE_ENTRY",
+    payload: entry,
+    section
+  };
+};

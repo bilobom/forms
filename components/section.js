@@ -1,52 +1,63 @@
 import * as React from "react";
-import { View, StyleSheet } from "react-native";
-import { Title, IconButton, Colors, Divider, List } from "react-native-paper";
-import { Constants } from "expo";
+import { View, StyleSheet, Image, FlatList, Text } from "react-native";
+import { Colors, Divider, List } from "react-native-paper";
+import Swipper from "react-native-swiper";
+import { connect } from "react-redux";
+import RF from "react-native-responsive-fontsize";
 
-const entries = [
-  { title: "Engineer", desc: '"rates & cost"' },
-  { title: "Technicien", desc: '"rates & cost"' },
-  { title: "Rigger", desc: '"rates & cost"' },
-  { title: "Helper", desc: '"rates & cost"' }
-];
-
-export default class Section extends React.Component {
+class Section extends React.Component {
   static navigationOptions = {
     header: null
   };
-  moveToSection=(index)=>{
-    this.props.navigation.navigate('Entry',{title:entries[index].title})
-  }
+  moveToSection = (section, entry) => {
+    const {} = this.props.CPF.cost;
+    this.props.navigation.navigate("Entry", { entry: entry, section });
+  };
   render() {
+    const {
+      sections
+      // Manpower: { entries }
+    } = this.props.CPF.cost;
     return (
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <List.Item
-            title={'SECTION #'}
-            // description={item.desc}
-            right={props => (
-              <List.Icon {...props} icon={"keyboard-arrow-down"} />
-            )}
-          />
-        </View>
-        <Divider style={{ backgroundColor: Colors.red200 }} />
-        <View style={styles.content}>
-          {entries.map((item, index) => (
-            <React.Fragment key={index}>
-              <List.Item
-                titleEllipsizeMode="head"
-                title={item.title}
-                activeOpacity={0.7}
-                onPress={(evt)=>this.moveToSection(index)}// description={item.desc}
-                right={props => (
-                  <List.Icon {...props} icon={"keyboard-arrow-right"} />
-                )}
-              />
-              <Divider />
-            </React.Fragment>
-          ))}
-        </View>
-      </View>
+      <Swipper>
+        {sections.map((section, index) => {
+          return (
+            <View style={styles.container} key={index}>
+              <View style={styles.header}>
+                <Image
+                  source={this.props.CPF.cost[section].imageSource}
+                  alt="workers"
+                  resizeMode="center"
+                  style={{ height: '50%', width: '50%' }}
+                />
+                <Text style={styles.headerText}>{section}</Text>
+                {section.subtitle && (<Text style={styles.headerText}>{this.props.CPF.cost[section].subtitle}</Text>)}
+              </View>
+              <View style={styles.content}>
+                <FlatList
+                  // style={styles.container}
+                  keyExtractor={(item, index) => index+''}
+                  data={this.props.CPF.cost[section].entries}
+                  renderItem={({item:entry,index}) => (
+                    <View key={index}>
+                      <List.Item
+                        titleEllipsizeMode="head"
+                        title={entry}
+                        activeOpacity={0.7}
+                        onPress={evt => this.moveToSection(section, entry)} // description={item.desc}
+                        right={props => (
+                          <List.Icon {...props} icon={"keyboard-arrow-right"} />
+                        )}
+                      />
+                      <Divider />
+                    </View>
+                  )}
+                />
+              </View>
+            </View>
+          );
+        })}
+      </Swipper>
     );
   }
 }
@@ -54,16 +65,35 @@ export default class Section extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    borderTopStartRadius: 10,
-    borderTopEndRadius: 10,
-    marginTop: Constants.statusBarHeight
+    backgroundColor: "#5CDB95",
+    paddingBottom: 10,
+    padding: 30
+    // marginTop: Constants.statusBarHeight
   },
   header: {
     flex: 1,
-    
+    alignItems: "center",
+    justifyContent: "center"
   },
   content: {
-    flex: 7,
-    backgroundColor: Colors.white 
+    flex: 1.5,
+    backgroundColor: Colors.white,
+    borderRadius: 15,
+    padding: 20
+  },
+  headerText: {
+    fontSize: RF(6),
+    fontWeight: "bold",
+    fontFamily: "Roboto"
   }
 });
+const mapStateToProps = state => ({
+  CPF: state.CPF
+});
+
+export default connect(
+  mapStateToProps,
+  {
+    /*dsdfsdf*/
+  }
+)(Section);

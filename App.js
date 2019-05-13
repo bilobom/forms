@@ -1,47 +1,64 @@
 import * as React from "react";
-import {
-  Animated,
-  Easing,
-  StyleSheet,
-  Platform
-} from 'react-native'
-import { Constants } from "expo";
 import { Provider } from "react-redux";
-import store from './redux/store'
+import store from "./redux/store";
 import { createAppContainer, createStackNavigator } from "react-navigation";
-import { zoomIn } from 'react-navigation-transitions';
+import { zoomIn } from "react-navigation-transitions";
+import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 
 import Section from "./components/section";
 import Entry from "./components/entry";
-
-
-
+import Sectors from './components/sectors';
 const Navigation = createAppContainer(
   createStackNavigator(
     {
+      Sectors:{screen:Sectors},
       Section: { screen: Section },
       Entry: { screen: Entry }
     },
     {
-      initialRouteName: 'Section',
+      initialRouteName: "Sectors",
       navigationOptions: {
         cardStack: {
           gesturesEnabled: false
         },
         gesturesEnabled: false
       },
+      defaultNavigationOptions: {
+        headerStyle: {
+          backgroundColor: '#05386b',
+        },
+        headerTintColor: '#EDF5E1',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      },  
       gesturesEnabled: false,
-      transitionConfig:  () => zoomIn(1000),
+      transitionConfig: () => zoomIn(400)
     }
   )
 );
+
+const theme = {
+  ...DefaultTheme,
+  roundness: 20,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: "#05386b",
+    accent: "#379683",
+    text:'#05386b',
+    background:'#5CDB95',
+    placeholder:'#379683'
+  }
+};
+
 export default class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <Navigation />
+        <PaperProvider theme={theme}>
+          <Navigation />
+        </PaperProvider>
       </Provider>
     );
   }
 }
-

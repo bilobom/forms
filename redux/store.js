@@ -6,24 +6,104 @@ let middlewares = [thunk];
 
 const initState = {
   CPF: {
-    sectors: ["Fees On Supplier", "cost",'Costomer','Provisions'],
-    Provisions:{
-      imageSource:require('../assets/provision.png'),
-      subtitle:''
+    sectors: ["Fees On Supplier", "cost", "Costomer", "Provisions"],
+    Provisions: {
+      imageSource: require("../assets/provision.png"),
+      subtitle: ""
     },
-    Costomer:{
-      imageSource:require('../assets/miscellaneous.png'),
-      subtitle:'Condition of Payment',
-      sections: ["Payment Conditon","Invoicing","Financial Fees",],
+    Costomer: {
+      imageSource: require("../assets/miscellaneous.png"),
+      subtitle: "Condition of Payment",
+      sections: [
+        "Payement Condition",
+        "Invoicing",
+        "Financial Fees",
+        /* "Subcontrating" */
+      ],
+      "Payement Condition": {
+        imageSource: require("../assets/workers2.png"),
+        entries: ["Type", "Delay"],
+        Type: {
+          ids: ["Date M0+n", "%"],
+          "Date M0+n": { value: "", unit: "Dzd", type: "numeric" },
+          "%": { value: "", unit: " %", type: "numeric" }
+        },
+        Delay: {
+          ids: ["Date M0+n", "%"],
+          "Date M0+n": { value: "", unit: "Dzd", type: "numeric" },
+          "%": { value: "", unit: " %", type: "numeric" }
+        }
+      },
+      Invoicing: {
+        imageSource: require("../assets/workers2.png"),
+        entries: [
+          "Down Payment",
+          "Commissioning",
+          "HandOver",
+          "End Of Warranty"
+        ],
+        "Down Payment": {
+          ids: ["Date M0+n", "%", "Amount"],
+          "Date M0+n": { value: "", unit: "Dzd", type: "numeric" },
+          "%": { value: "", unit: " %", type: "numeric" }
+        },
+        Commissioning: {
+          ids: ["Date M0+n", "%", "Amount"],
+          "Date M0+n": { value: "", unit: "Dzd", type: "numeric" },
+          "%": { value: "", unit: " %", type: "numeric" },
+          Amount: { value: "", unit: "  Dzd", type: "numeric" }
+        },
+        HandOver: {
+          ids: ["Date M0+n", "%", "Amount"],
+          "Date M0+n": { value: "", unit: "Dzd", type: "numeric" },
+          "%": { value: "", unit: " %", type: "numeric" },
+          Amount: { value: "", unit: "  Dzd", type: "numeric" }
+        },
+        "End Of Warranty": {
+          ids: ["Date M0+n", "%", "Amount"],
+          "Date M0+n": { value: "", unit: "Dzd", type: "numeric" },
+          "%": { value: "", unit: " %", type: "numeric" },
+          Amount: { value: "", unit: "  Dzd", type: "numeric" }
+        }
+      },
+      "Financial Fees": {
+        imageSource: require("../assets/workers2.png"),
+        entries: ["On bid bond", "On Letter Of Credit", "On performance Bond"],
+        "On Bid Bond": {
+          ids: ["%", "Amount"],
+          "%": { value: "", unit: " %", type: "numeric" },
+          Amount: { value: "", unit: "  Dzd", type: "numeric" }
+        },
+        "On Letter Of Credit": {
+          ids: ["%", "Amount"],
+          "%": { value: "", unit: " %", type: "numeric" },
+          Amount: { value: "", unit: "  Dzd", type: "numeric" }
+        },
+        "On performance Bond": {
+          ids: ["%", "Amount"],
+          "%": { value: "", unit: " %", type: "numeric" },
+          Amount: { value: "", unit: "  Dzd", type: "numeric" }
+        }
+      }
+      /* Subcontrating:{
+        imageSource: require("../assets/workers2.png"),
+        subtitle: "And Services",
+        entries: ["None For The Momement"],
+        "None For The Momement":{
+        }
+      } */
     },
     "Fees On Supplier": {
       imageSource: require("../assets/sectionB.png"),
       subtitle: "Conditions of Payement",
-      sections: ["Risks"],
-      Risks:{
+      sections: ["Risks",],
+      Risks: {
         imageSource: require("../assets/workers2.png"),
-        subtitle:'To be coverred on currency rates',
-        entries: ["Supplier 1","supplier 2",'civil Works','Others'],
+        subtitle: "To be coverred on currency rates",
+        entries: ["Supplier 1", "supplier 2", "civil Works", "Others"],
+        "Supplier 1":{
+          ids:["Amount","Currency","Rates",]
+        }
       }
     },
     cost: {

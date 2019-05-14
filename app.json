@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "tobedeleted",
-    "description": "No description",
+    "name": "CPF_rgrid",
+    "description": "Control Price Form",
     "slug": "snack-S16DpLg2V",
     "privacy": "unlisted",
     "sdkVersion": "32.0.0",
@@ -23,6 +23,10 @@
     },
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "platforms": [
+      "android",
+      "ios"
+    ]
   }
 }

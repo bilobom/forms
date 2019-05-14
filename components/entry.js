@@ -1,14 +1,11 @@
 import React, { Component } from "react";
-import { StyleSheet, View, KeyboardAvoidingView } from "react-native";
+import { StyleSheet, View, KeyboardAvoidingView, Text } from "react-native";
 import { Colors, Button, TextInput, Divider } from "react-native-paper";
 import { TextInputMask } from "react-native-masked-text";
 
 import { connect } from "react-redux";
-// const engineer = [
-//   { name: "Rates DZD", value: "10 Dzd" },
-//   { name: "Men/Moth", value: "10" },
-//   { name: "Cost Euros", value: "10 £" }
-// ];
+import RF from "react-native-responsive-fontsize";
+
 class Entry extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
@@ -26,7 +23,14 @@ class Entry extends Component {
   componentDidMount() {
     const entry = this.props.navigation.getParam("entry", "NavEntry");
     const section = this.props.navigation.getParam("section", "NavSection");
-    this.setState({ entries: this.props.CPF.cost[section][entry] });
+    const sector = this.props.navigation.getParam("sector", "NavSector");
+    const next = this.props.navigation.getParam("next", "NavNext");
+    this.setState({
+      entries: this.props.CPF[sector][section][entry],
+      sector,
+      next,
+      section
+    });
   }
   onInputChange = (id, input) => {
     this.setState(pr => {
@@ -42,38 +46,59 @@ class Entry extends Component {
   goBack = () => {
     this.props.navigation.goBack();
   };
+  goForward = () => {
+    this.goBack();
+    // this.props.navigation.navigate("Entry",{entry});
+  };
   render() {
-    const { entries } = this.state;
-    return (
+    const { entries = {} } = this.state;
+    return entries.hasOwnProperty("ids") ? (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
-        <View style={{ flex: 1,justifyContent:'space-between' }}>
-          {entries.ids.map((id, index) => (
-            <View key={index}>
-              <TextInput
-                key={index}
-                mode="outlined"
-                label={id}
-                keyboardType={entries[id].type || "default"}
-                value={entries[id].value}
-                onChangeText={text => this.onInputChange(id, text)}
-                // style={{ margin: 30 }}
-                // (index== entry.length-1)
-                render={props => (
-                  <TextInputMask
-                    {...props}
-                    type={entries[id].type !== "default" ? "money" : "custom"}
-                    options={{
-                      precision: null,
-                      separator: "",
-                      delimiter: "",
-                      unit: entries[id].unit + "  "
-                    }}
-                  />
-                )}
-              />
-              <Divider />
-            </View>
-          ))}
+        <View style={{ flex: 1, justifyContent: "space-evenly" }}>
+          {entries.ids.map((id, index) => {
+            if (!entries[id]) {
+              return (
+                <View
+                  key={index}
+                  style={{
+                    flex: 1,
+                    alignItems: "center",
+                    justifyContent: "space-evenly"
+                  }}
+                >
+                  <Text style={{ fontWeight: "bold", fontSize: RF(4) }}>
+                    No Entries yet for {id}
+                  </Text>
+                </View>
+              );
+            }
+            const { type, value = "", unit = "" } = entries[id];
+            return (
+              <View key={index}>
+                <TextInput
+                  key={index}
+                  mode="outlined"
+                  label={id}
+                  keyboardType={type || "default"}
+                  value={value}
+                  onChangeText={text => this.onInputChange(id, text)}
+                  render={props => (
+                    <TextInputMask
+                      {...props}
+                      type={type !== "default" ? "money" : "custom"}
+                      options={{
+                        precision: null,
+                        separator: "",
+                        delimiter: "",
+                        unit: unit + "  "
+                      }}
+                    />
+                  )}
+                />
+                <Divider />
+              </View>
+            );
+          })}
         </View>
         <View
           style={{
@@ -95,12 +120,18 @@ class Entry extends Component {
             </Button>
           </View>
           <View>
-            <Button onPress={this.goBack} icon="check" mode="contained">
+            <Button onPress={this.goForward} icon="check" mode="contained">
               Next
             </Button>
           </View>
         </View>
       </KeyboardAvoidingView>
+    ) : (
+      <View style={styles.emptyEntry}>
+        <Text style={{ fontSize: RF(4), fontWeight: "bold" }}>
+          No Entrie Yet For This section
+        </Text>
+      </View>
     );
   }
 }
@@ -108,9 +139,15 @@ class Entry extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.red,
-    padding:20
+    backgroundColor: "#EDF5E1",
+    padding: 20
     //marginTop: Constants.statusBarHeight
+  },
+  emptyEntry: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#EDF5E1"
   }
 });
 const mapStateToProps = state => ({

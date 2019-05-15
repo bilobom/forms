@@ -20,7 +20,7 @@ export class sectors extends Component {
     header: null
   };
   sectorSelected = (sector, index) => {
-    this.props.navigation.navigate('Section',{sector})
+    this.props.navigation.navigate("Section", { sector });
   };
   render() {
     const {
@@ -40,19 +40,23 @@ export class sectors extends Component {
               >
                 <Surface style={styles.sectorHolder}>
                   <View style={{ flex: 1 }}>
-                    <Image
-                      source={CPF[sector].imageSource}
-                      alt={"dsf"}
-                      style={{ height: height / 6, width: null, flex: 1 }}
-                    />
+                    {CPF[sector] && (
+                      <Image
+                        source={CPF[sector].imageSource}
+                        alt={"dsf"}
+                        style={{ height: height / 6, width: null, flex: 1 }}
+                      />
+                    )}
                   </View>
 
                   <View style={{ flex: 1, justifyContent: "space-between" }}>
                     <View>
                       <Text style={styles.sectorText}>{sector}</Text>
-                      <Text style={styles.subtitleText}>
-                        {CPF[sector].subtitle}
-                      </Text>
+                      {CPF[sector] && (
+                        <Text style={styles.subtitleText}>
+                          {CPF[sector].subtitle}
+                        </Text>
+                      )}
                     </View>
                     <View style={styles.buttonAccess}>
                       <View style={styles.buttonAccessHolder}>
@@ -117,13 +121,14 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto"
   },
   buttonAccess: {
-    flexDirection:'row',
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "flex-end",
-/*     backgroundColor:'red'
- */  },
+    justifyContent: "flex-end"
+    /*     backgroundColor:'red'
+     */
+  },
   buttonAccessHolder: {
-    marginLeft:RF(1),
+    marginLeft: RF(1),
     backgroundColor: "#EDF5E1",
     borderRadius: 50
   }

@@ -7,7 +7,7 @@ import {
   Text,
   TouchableOpacity
 } from "react-native";
-import { Colors, Divider, List } from "react-native-paper";
+import { Colors, Divider, List, Chip } from "react-native-paper";
 import Swipper from "react-native-swiper";
 import { connect } from "react-redux";
 import RF from "react-native-responsive-fontsize";
@@ -23,11 +23,12 @@ class Section extends React.Component {
   };
   moveToEntry = (section, entry) => {
     this.props.navigation.navigate("Entry", {
-      entry: entry,
-      section,
-      sector: this.state.sector
+      navData: {
+        entry: entry,
+        section,
+        sector: this.state.sector
+      }
     });
-    //this.setState({ entries: this.props.CPF.cost[section][entry] });
   };
   componentDidMount() {
     const sector = this.props.navigation.getParam("sector", "cost");
@@ -54,9 +55,8 @@ class Section extends React.Component {
                   <TouchableOpacity onPress={this.goBack}>
                     <Icons
                       name="keyboard-arrow-left"
-                      size={RF(6)}
+                      size={RF(7)}
                       color="#05386B"
-                      /* mode="contained" onPress={() => this.sectorSelected(sector, index)} */
                     />
                   </TouchableOpacity>
                 </View>
@@ -90,9 +90,45 @@ class Section extends React.Component {
                         title={entry}
                         activeOpacity={0.7}
                         onPress={evt => this.moveToEntry(section, entry)} // description={item.desc}
-                        right={props => (
-                          <List.Icon {...props} icon={"keyboard-arrow-right"} />
-                        )}
+                        right={props => {
+                          let entryInstance = this.props.CPF[sector][section][
+                            entry
+                          ];
+                          console.log(entryInstance);
+
+                          return (
+                            <View
+                              style={{
+                                flexDirection: "row",
+                                alignItems: "center"
+                              }}
+                            >
+                              {entryInstance.has​OwnProperty('chipEnabled ') && (
+                                <View
+                                  style={{
+                                    flexDirection: "row",
+                                    alignItems: "center"
+                                  }}
+                                >
+                                  {entryInstance.ids.map((id, index) => (
+                                    <Chip
+                                      key={index}
+                                      icon={entryInstance[id].icon}
+                                      style={{ backgroundColor: "#8EE4AF" }}
+                                    >
+                                      {entryInstance[id].value}{" "}
+                                      {entryInstance[id].unit}
+                                    </Chip>
+                                  ))}
+                                </View>
+                              )}
+                              <List.Icon
+                                {...props}
+                                icon={"keyboard-arrow-right"}
+                              />
+                            </View>
+                          );
+                        }}
                       />
                       <Divider />
                     </View>

@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "CPF_rgrid",
+    "name": "CPF",
     "description": "Control Price Form",
     "slug": "snack-S16DpLg2V",
     "privacy": "unlisted",
     "sdkVersion": "32.0.0",
-    "version": "1.0.0",
+    "version": "0.0.1",
     "orientation": "portrait",
     "primaryColor": "#cccccc",
     "icon": "https://d1wp6m56sqw74a.cloudfront.net/~assets/c9aa1be8a6a6fe81e20c3ac4106a2ebc",
@@ -23,6 +23,9 @@
     },
     "ios": {
       "supportsTablet": true
+    },
+    "android": {
+      "package": "com.rgrid.cpf"
     },
     "platforms": [
       "android",

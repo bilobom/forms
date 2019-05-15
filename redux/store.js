@@ -6,7 +6,13 @@ let middlewares = [thunk];
 
 const initState = {
   CPF: {
-    sectors: ["Fees On Supplier", "cost", "Costomer", "Provisions"],
+    sectors: [
+      "Fees On Supplier",
+      "cost",
+      "Costomer",
+      "Provisions",
+      "Structure"
+    ],
     Provisions: {
       imageSource: require("../assets/provision.png"),
       subtitle: ""
@@ -17,21 +23,21 @@ const initState = {
       sections: [
         "Payement Condition",
         "Invoicing",
-        "Financial Fees",
-        /* "Subcontrating" */
+        "Financial Fees"
+        /* 'Subcontrating' */
       ],
       "Payement Condition": {
         imageSource: require("../assets/workers2.png"),
         entries: ["Type", "Delay"],
         Type: {
-          ids: ["Date M0+n", "%"],
-          "Date M0+n": { value: "", unit: "Dzd", type: "numeric" },
-          "%": { value: "", unit: " %", type: "numeric" }
+          ids: ["L/C", "Transfer", "Check"],
+          "L/C": { type: "checkbox", checked: false },
+          Transfer: { type: "checkbox", checked: false },
+          Check: { type: "checkbox", checked: false }
         },
         Delay: {
-          ids: ["Date M0+n", "%"],
-          "Date M0+n": { value: "", unit: "Dzd", type: "numeric" },
-          "%": { value: "", unit: " %", type: "numeric" }
+          ids: ["Days"],
+          Days: { value: "", unit: " days", type: "numeric" }
         }
       },
       Invoicing: {
@@ -86,23 +92,23 @@ const initState = {
         }
       }
       /* Subcontrating:{
-        imageSource: require("../assets/workers2.png"),
-        subtitle: "And Services",
-        entries: ["None For The Momement"],
-        "None For The Momement":{
+        imageSource: require('../assets/workers2.png'),
+        subtitle: 'And Services',
+        entries: ['None For The Momement'],
+        'None For The Momement':{
         }
       } */
     },
     "Fees On Supplier": {
       imageSource: require("../assets/sectionB.png"),
       subtitle: "Conditions of Payement",
-      sections: ["Risks",],
+      sections: ["Risks"],
       Risks: {
         imageSource: require("../assets/workers2.png"),
         subtitle: "To be coverred on currency rates",
         entries: ["Supplier 1", "supplier 2", "civil Works", "Others"],
-        "Supplier 1":{
-          ids:["Amount","Currency","Rates",]
+        "Supplier 1": {
+          ids: ["Amount", "Currency", "Rates"]
         }
       }
     },
@@ -196,12 +202,92 @@ const initState = {
           "Cost Euros": { value: "", unit: "  €", type: "numeric" }
         }
       }
+    },
+    Structure: {
+      subtitle: "of Selling Prices",
+      sections: ["-"],
+      "-": {
+        imageSource: require("../assets/cost.png"),
+        subtitle: "",
+        entries: [
+          "Proposed Selling Price",
+          "Margin For Negotiation",
+          "SELLING PRICE",
+          "Marketing Fees",
+          "Provision (Total C)",
+          "Cost (Total A)",
+          "financial Fees (B+D)",
+          "Gross margin",
+          "Overheads",
+          "Financing of Working Capital",
+          "NET MARGIN"
+        ],
+        "Proposed Selling Price": {
+          ids: ["Percentage %", "Value (Dzd)"],
+          "Percentage %": { value: "", unit: " %", type: "numeric" },
+          "Value (Dzd)": { value: "", unit: " Dzd", type: "numeric" }
+        },
+        "Margin For Negotiation": {
+          ids: ["Percentage %", "Value (Dzd)"],
+          "Percentage %": { value: "", unit: " %", type: "numeric" },
+          "Value (Dzd)": { value: "", unit: " Dzd", type: "numeric" }
+        },
+        "SELLING PRICE": {
+          chipEnabled:'true',
+          ids: ["Percentage %", "Value (Dzd)"],
+          "Percentage %": { value: "0", unit: " %", type: "numeric",icon:'info', },
+          "Value (Dzd)": { value: "0", unit: " Dzd", type: "numeric",icon:'attach-money' },
+
+        },
+        "Marketing Fees": {
+          ids: ["Percentage %", "Value (Dzd)"],
+          "Percentage %": { value: "", unit: " %", type: "numeric" },
+          "Value (Dzd)": { value: "", unit: " Dzd", type: "numeric" }
+        },
+        "Provision (Total C)": {
+          ids: ["Percentage %", "Value (Dzd)"],
+          "Percentage %": { value: "", unit: " %", type: "numeric" },
+          "Value (Dzd)": { value: "", unit: " Dzd", type: "numeric" }
+        },
+        "Cost (Total A)": {
+          ids: ["Percentage %", "Value (Dzd)"],
+          "Percentage %": { value: "", unit: " %", type: "numeric" },
+          "Value (Dzd)": { value: "", unit: " Dzd", type: "numeric" }
+        },
+        "financial Fees (B+D)": {
+          ids: ["Percentage %", "Value (Dzd)"],
+          "Percentage %": { value: "", unit: " %", type: "numeric" },
+          "Value (Dzd)": { value: "", unit: " Dzd", type: "numeric" }
+        },
+        "Gross margin": {
+          ids: ["Percentage %", "Value (Dzd)"],
+          "Percentage %": { value: "", unit: " %", type: "numeric" },
+          "Value (Dzd)": { value: "", unit: " Dzd", type: "numeric" }
+        },
+        Overheads: {
+          ids: ["Percentage %", "Value (Dzd)"],
+          "Percentage %": { value: "", unit: " %", type: "numeric" },
+          "Value (Dzd)": { value: "", unit: " Dzd", type: "numeric" }
+        },
+        "Financing of Working Capital": {
+          ids: ["Percentage %", "Value (Dzd)"],
+          "Percentage %": { value: "", unit: " %", type: "numeric" },
+          "Value (Dzd)": { value: "", unit: " Dzd", type: "numeric" }
+        },
+        "NET MARGIN": {
+          ids: ["Percentage %", "Value (Dzd)"],
+          "Percentage %": { value: "", unit: " %", type: "numeric" },
+          "Value (Dzd)": { value: "", unit: " Dzd", type: "numeric" }
+        }
+      }
     }
   }
 };
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 const store = createStore(
   rootReducer,
   initState,
-  compose(applyMiddleware(...middlewares))
+  composeEnhancers(applyMiddleware(...middlewares))
 );
 export default store;

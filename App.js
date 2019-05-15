@@ -4,14 +4,15 @@ import store from "./redux/store";
 import { createAppContainer, createStackNavigator } from "react-navigation";
 import { zoomIn } from "react-navigation-transitions";
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
+import { ScreenOrientation } from "expo";
 
 import Section from "./components/section";
 import Entry from "./components/entry";
-import Sectors from './components/sectors';
+import Sectors from "./components/sectors";
 const Navigation = createAppContainer(
   createStackNavigator(
     {
-      Sectors:{screen:Sectors},
+      Sectors: { screen: Sectors },
       Section: { screen: Section },
       Entry: { screen: Entry }
     },
@@ -25,13 +26,13 @@ const Navigation = createAppContainer(
       },
       defaultNavigationOptions: {
         headerStyle: {
-          backgroundColor: '#05386b',
+          backgroundColor: "#05386b"
         },
-        headerTintColor: '#EDF5E1',
+        headerTintColor: "#EDF5E1",
         headerTitleStyle: {
-          fontWeight: 'bold',
-        },
-      },  
+          fontWeight: "bold"
+        }
+      },
       gesturesEnabled: false,
       transitionConfig: () => zoomIn(400)
     }
@@ -45,13 +46,16 @@ const theme = {
     ...DefaultTheme.colors,
     primary: "#05386b",
     accent: "#379683",
-    text:'#05386b',
-    background:'#5CDB95',
-    placeholder:'#379683'
+    text: "#05386b",
+    background: "#5CDB95",
+    placeholder: "#379683"
   }
 };
 
 export default class App extends React.Component {
+  componentDidMount() {
+    ScreenOrientation.allowAsync(ScreenOrientation.Orientation.ALL);
+  }
   render() {
     return (
       <Provider store={store}>

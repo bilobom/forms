@@ -1,47 +1,47 @@
 import React, { Component } from "react";
 import { StyleSheet, View, KeyboardAvoidingView, Text } from "react-native";
-import { Colors, Button, TextInput, Divider } from "react-native-paper";
-import { TextInputMask } from "react-native-masked-text";
-
+import { Button } from "react-native-paper";
+import Empty, { Input, CheckBoxes } from "./empty";
 import { connect } from "react-redux";
 import RF from "react-native-responsive-fontsize";
 
+import { toggleCheckBox,updateInput } from "../redux/actionCreators";
 class Entry extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      title: navigation.getParam("entry", "Entry")
+      title: navigation.getParam("navData").entry
     };
   };
   state = {
     entries: {
-      ids: ["Rate Dzd", "Men/Month", "Cost Euros"],
-      "Rate Dzd": { value: "", unit: "Dzd", type: "numeric" },
-      "Men/Month": { value: "", unit: "", type: "numeric" },
-      "Cost Euros": { value: "", unit: "  €", type: "numeric" }
+      ids: []
     }
   };
+  componentWillReceiveProps(nextProps) {
+    this.setState(pr => ({
+      entries: nextProps.CPF[pr.sector][pr.section][pr.entry]
+    }));
+  }
   componentDidMount() {
-    const entry = this.props.navigation.getParam("entry", "NavEntry");
-    const section = this.props.navigation.getParam("section", "NavSection");
-    const sector = this.props.navigation.getParam("sector", "NavSector");
-    const next = this.props.navigation.getParam("next", "NavNext");
+    const { entry, section, sector } = this.props.navigation.getParam(
+      "navData",
+      {}
+    );
     this.setState({
       entries: this.props.CPF[sector][section][entry],
       sector,
-      next,
-      section
+      section,
+      entry
     });
   }
-  onInputChange = (id, input) => {
-    this.setState(pr => {
-      return {
-        ...pr,
-        entries: {
-          ...pr.entries,
-          [id]: { ...pr.entries[id], value: input }
-        }
-      };
-    });
+  onInputChange = (id, value) => {
+    
+    const { sector, section, entry } = this.state;
+    this.props.updateInput(sector, section, entry, id, value);
+  };
+  onCheckBox = id => {
+    const { sector, section, entry } = this.state;
+    this.props.toggleCheckBox(sector, section, entry, id);
   };
   goBack = () => {
     this.props.navigation.goBack();
@@ -51,70 +51,48 @@ class Entry extends Component {
     // this.props.navigation.navigate("Entry",{entry});
   };
   render() {
-    const { entries = {} } = this.state;
+    const { entries = {}} = this.state;
     return entries.hasOwnProperty("ids") ? (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <View style={{ flex: 1, justifyContent: "space-evenly" }}>
           {entries.ids.map((id, index) => {
             if (!entries[id]) {
+              return <Empty key={index} text={"No Fields yet for " + id} />;
+            } else if (entries[id].type == "checkbox") {
+              const {checked}=entries[id]
               return (
-                <View
-                  key={index}
-                  style={{
-                    flex: 1,
-                    alignItems: "center",
-                    justifyContent: "space-evenly"
-                  }}
-                >
-                  <Text style={{ fontWeight: "bold", fontSize: RF(4) }}>
-                    No Entries yet for {id}
-                  </Text>
+                <View key={index} style={styles.checkBox}>
+                  <CheckBoxes
+                    data={{
+                      onCheckBox: () => this.onCheckBox(id),
+                      checked,
+                      id
+                    }}
+                  />
                 </View>
               );
-            }
-            const { type, value = "", unit = "" } = entries[id];
-            return (
-              <View key={index}>
-                <TextInput
-                  key={index}
-                  mode="outlined"
-                  label={id}
-                  keyboardType={type || "default"}
-                  value={value}
-                  onChangeText={text => this.onInputChange(id, text)}
-                  render={props => (
-                    <TextInputMask
-                      {...props}
-                      type={type !== "default" ? "money" : "custom"}
-                      options={{
-                        precision: null,
-                        separator: "",
-                        delimiter: "",
-                        unit: unit + "  "
-                      }}
-                    />
-                  )}
-                />
-                <Divider />
-              </View>
-            );
+            } else
+              return (
+                <View key={index}>
+                  <Input
+                    data={{
+                      ...entries[id],
+                      id,
+                      onInputChange: this.onInputChange
+                    }}
+                  />
+                  {/* <Divider /> */}
+                </View>
+              );
           })}
         </View>
-        <View
-          style={{
-            alignSelf: "stretch",
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "space-around",
-            alignItems: "center"
-          }}
-        >
+        <View style={styles.DoneButton}>
           <View>
             <Button
               onPress={this.goBack}
               icon="check"
               mode="contained"
-              style={{ borderRadius: 20 }}
+              // style={{ borderRadius: 20 }}
             >
               Done
             </Button>
@@ -148,6 +126,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#EDF5E1"
+  },
+  DoneButton: {
+    alignSelf: "stretch",
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center"
+  },
+  checkBox: {
+    // flexDirection: "row"
   }
 });
 const mapStateToProps = state => ({
@@ -155,5 +143,5 @@ const mapStateToProps = state => ({
 });
 export default connect(
   mapStateToProps,
-  {}
+  { toggleCheckBox,updateInput }
 )(Entry);

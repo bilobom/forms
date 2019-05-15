@@ -1,7 +1,12 @@
-export const updateEntry = (entry, section) => {
+export const updateInput = (sector, section, entry, id, value) => {
   return {
-    type: "UPDATE_ENTRY",
-    payload: entry,
-    section
+    type: "input",
+    payload: { sector, section, entry, id, value }
+  };
+};
+export const toggleCheckBox = (sector, section, entry, id) => {
+  return {
+    type: "checkBox",
+    payload: { sector, section, entry, id }
   };
 };

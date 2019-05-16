@@ -6,6 +6,7 @@ let middlewares = [thunk];
 
 const initState = {
   CPF: {
+    
     sectors: [
       "Fees On Supplier",
       "cost",
@@ -233,11 +234,20 @@ const initState = {
           "Value (Dzd)": { value: "", unit: " Dzd", type: "numeric" }
         },
         "SELLING PRICE": {
-          chipEnabled:'true',
+          chipEnabled: "true",
           ids: ["Percentage %", "Value (Dzd)"],
-          "Percentage %": { value: "0", unit: " %", type: "numeric",icon:'info', },
-          "Value (Dzd)": { value: "0", unit: " Dzd", type: "numeric",icon:'attach-money' },
-
+          "Percentage %": {
+            value: "0",
+            unit: " %",
+            type: "numeric",
+            icon: "info"
+          },
+          "Value (Dzd)": {
+            value: "0",
+            unit: " Dzd",
+            type: "numeric",
+            icon: "attach-money"
+          }
         },
         "Marketing Fees": {
           ids: ["Percentage %", "Value (Dzd)"],
@@ -275,9 +285,20 @@ const initState = {
           "Value (Dzd)": { value: "", unit: " Dzd", type: "numeric" }
         },
         "NET MARGIN": {
+          chipEnabled: "true",
           ids: ["Percentage %", "Value (Dzd)"],
-          "Percentage %": { value: "", unit: " %", type: "numeric" },
-          "Value (Dzd)": { value: "", unit: " Dzd", type: "numeric" }
+          "Percentage %": {
+            value: "0",
+            unit: " %",
+            type: "numeric",
+            icon: "info"
+          },
+          "Value (Dzd)": {
+            value: "0",
+            unit: " Dzd",
+            type: "numeric",
+            icon: "attach-money"
+          }
         }
       }
     }

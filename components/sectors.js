@@ -13,7 +13,7 @@ import RF from "react-native-responsive-fontsize";
 import { Constants } from "expo";
 import { Surface } from "react-native-paper";
 import Icons from "@expo/vector-icons/MaterialIcons";
-
+import HeaderFlatList from './collapsibleHeader.js'
 const { height, width } = Dimensions.get("window");
 export class sectors extends Component {
   static navigationOptions = {
@@ -29,7 +29,7 @@ export class sectors extends Component {
     } = this.props;
     return (
       <View style={styles.container}>
-        <FlatList
+        <HeaderFlatList
           data={sectors}
           keyExtractor={(item, index) => index + ""}
           renderItem={({ item: sector, index }) => {
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: Constants.statusBarHeight + RF(2),
-    backgroundColor: "#05386b",
+    backgroundColor: '#EDF5E1',//"#05386b",
     padding: RF(2),
     justifyContent: "space-around"
   },
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     borderRadius: RF(2),
     padding: RF(2),
-    elevation: 10
+    elevation: 2
   },
   sectorText: {
     fontSize: RF(4.5),

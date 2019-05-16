@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
-  "expoServerPort": null,
-  "packagerPort": null,
-  "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null,
+  "expoServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 8481,
+  "expoServerNgrokUrl": "https://2d-4ht.bilobom.forms.exp.direct",
+  "packagerNgrokUrl": "https://packager.2d-4ht.bilobom.forms.exp.direct",
+  "ngrokPid": 8552,
   "webpackServerPort": null
 }

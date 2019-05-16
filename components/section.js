@@ -93,9 +93,7 @@ class Section extends React.Component {
                         right={props => {
                           let entryInstance = this.props.CPF[sector][section][
                             entry
-                          ];
-                          console.log(entryInstance);
-
+                          ] || { ids: {} };
                           return (
                             <View
                               style={{
@@ -103,7 +101,8 @@ class Section extends React.Component {
                                 alignItems: "center"
                               }}
                             >
-                              {entryInstance.has​OwnProperty('chipEnabled ') && (
+                              {typeof entryInstance == "object" &&
+                              !("chipEnabled" in entryInstance) ? null : (
                                 <View
                                   style={{
                                     flexDirection: "row",
